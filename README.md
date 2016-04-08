@@ -7,7 +7,7 @@ Simple MP3 player for Android API 10+. By JACK
 [Download last version of JustMusic](https://github.com/JACK-siberian/MP3_player/blob/master/Screenshots%20+%20apk/JustMusic_beta-debug.apk?raw=true "Download APK")
 
 ## Screenshots 
-![Alt text](https://github.com/JACK-siberian/MP3_player/blob/master/Screenshots%20%2B%20apk/player_activity.png "Player activity")
+![Alt text](https://github.com/JACK-siberian/Just_Music/blob/master/Screenshots%20%2B%20apk/player_activity.png "Player activity")
 ![Alt text](https://github.com/JACK-siberian/MP3_player/blob/master/Screenshots%20%2B%20apk/my_music_activity.png "MyMusic activity")
 ![Alt text](https://github.com/JACK-siberian/MP3_player/blob/master/Screenshots%20%2B%20apk/Screenshot_2016-03-14-17-30-38.png)
 ![Alt text](https://github.com/JACK-siberian/MP3_player/blob/master/Screenshots%20%2B%20apk/Screenshot_2016-03-14-17-30-59.png)
