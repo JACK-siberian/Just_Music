@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">JMusic</string>
+    <string name="app_full_name">JustMusic</string>
+
+    <string name="player">Player</string>
+    <string name="now_playing">Now playing</string>
+    <string name="my_music">My music</string>
+    <string name="action_settings">Settings</string>
+    <string name="exit">EXIT</string>
+
+    <string name="my_music_item_all_tracks">All tracks</string>
+    <string name="my_music_item_artists">Artists</string>
+    <string name="my_music_item_albums">Albums</string>
+    <string name="my_music_item_playlists">Playlists</string>
+
+    <string name="number_of_songs">Number of songs:</string>
+
+    <string name="playlist_all_tracks_desc">All track on SD</string>
+
+
+    <string name="playlistEnd">The end of the playlist.</string>
+    <string name="curTracklistNull">Choose music from "MyMusic".</string>
+
+    <string name="exit_dialog_title">Stop playing music</string>
+    <string name="exit_dialog_positive">Stop music</string>
+    <string name="exit_dialog_negative">Keep playing</string>
+
+
+
+
+    <string name="setting_category_music_setting">Music setting</string>
+
+    <string name="setting_cb_shuffle_mode">shuffle_mode</string>
+    <string name="setting_cb_shuffle_mode_title">Shuffle mode</string>
+    <string name="setting_cb_shuffle_mode_summary_off">Shuffle tracks</string>
+    <string name="setting_cb_shuffle_mode_summary_on">Tracks set order successively</string>
+
+    <string name="setting_lp_loop_mode_list">loop_mode_list</string>
+    <string name="setting_lp_loop_mode_list_title">Loop mode</string>
+    <string name="setting_lp_loop_mode_list_summary">Currently: </string>
+    <string name="setting_lp_loop_mode_list_dialog_title">Choose mode from list:</string>
+    <string name="setting_lp_loop_mode_list_default">LOOP_MODE_NONE</string>
+
+    <string name="setting_lp_wake_lock_mode_list">wake_lock_mode_list</string>
+    <string name="setting_lp_wake_lock_mode_list_title">Wake lock mode</string>
+    <string name="setting_lp_wake_lock_mode_list_summary">Currently: </string>
+    <string name="setting_lp_wake_lock_mode_list_dialog_title">Choose mode from list:</string>
+    <string name="setting_lp_wake_lock_mode_list_default">PARTIAL_WAKE_LOCK</string>
+</resources>

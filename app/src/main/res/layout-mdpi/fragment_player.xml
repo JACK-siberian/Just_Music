@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rowInfoTrack"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#e7050505"
+    android:paddingTop="10dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="2dp" >
+    <TextView
+        android:id="@+id/textArtist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#fff"
+        android:singleLine="true" />
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#fff"
+        android:layout_gravity="center_vertical"
+        android:singleLine="true" />
+    <TextView
+        android:id="@+id/textAlbum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="#fff"
+        android:singleLine="true" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pagerImageCovers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="1dp" />
+</LinearLayout>

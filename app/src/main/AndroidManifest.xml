@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.JACK.JustMusicWW"
+    android:installLocation="auto">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+
+        <activity
+            android:name="com.JACK.JustMusicWW.PlayerActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.JACK.JustMusicWW.MyMusicActivity"
+            android:label="MY MUSIC"
+            android:parentActivityName="com.JACK.JustMusicWW.PlayerActivity"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.JACK.JustMusicWW.PlayerActivity" />
+        </activity>
+        <activity
+            android:name="com.JACK.JustMusicWW.SettingsActivity"
+            android:label="@string/action_settings"
+            >
+        </activity>
+
+        <service
+            android:name="com.JACK.JustMusicWW.PlayMusicService"
+            android:enabled="true" >
+        </service>
+
+        <receiver android:name="com.JACK.JustMusicWW.RemoteMediaControlReceiver" android:priority="1000">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.JACK.JustMusicWW.NoisyAudioStreamReceiver" android:priority="1000">
+        </receiver>
+
+    </application>
+</manifest>

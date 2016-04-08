@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="loop_mode_entries">
+        <item>None</item>
+        <item>All song</item>
+        <item>Single song</item>
+    </string-array>
+    <string-array name="loop_mode_entry_values">
+        <item>LOOP_MODE_NONE</item>
+        <item>LOOP_MODE_ALL</item>
+        <item>LOOP_MODE_SINGLE</item>
+    </string-array>
+
+    <string-array name="wake_lock_mode_entries">
+        <item>PARTIAL_WAKE_LOCK</item>
+        <item>SCREEN_DIM_WAKE_LOCK</item>
+        <item>SCREEN_BRIGHT_WAKE_LOCK</item>
+        <item>FULL_WAKE_LOCK</item>
+    </string-array>
+    <string-array name="wake_lock_mode_entry_values">
+        <item>PARTIAL_WAKE_LOCK</item>
+        <item>SCREEN_DIM_WAKE_LOCK</item>
+        <item>SCREEN_BRIGHT_WAKE_LOCK</item>
+        <item>FULL_WAKE_LOCK</item>
+    </string-array>
+</resources>

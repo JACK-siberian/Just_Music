@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <PreferenceCategory
+        android:title="@string/setting_category_music_setting"
+        >
+        <CheckBoxPreference
+            android:key="@string/setting_cb_shuffle_mode"
+            android:title="@string/setting_cb_shuffle_mode_title"
+            android:summaryOn="@string/setting_cb_shuffle_mode_summary_on"
+            android:summaryOff="@string/setting_cb_shuffle_mode_summary_off"
+            android:defaultValue="false"
+            />
+        <ListPreference
+            android:key="@string/setting_lp_loop_mode_list"
+            android:title="@string/setting_lp_loop_mode_list_title"
+            android:defaultValue="@string/setting_lp_loop_mode_list_default"
+            android:entries="@array/loop_mode_entries"
+            android:entryValues="@array/loop_mode_entry_values"
+            android:dialogTitle="@string/setting_lp_loop_mode_list_dialog_title"
+            />
+    </PreferenceCategory>
+    <ListPreference
+        android:key="@string/setting_lp_wake_lock_mode_list"
+        android:title="@string/setting_lp_wake_lock_mode_list_title"
+        android:defaultValue="@string/setting_lp_wake_lock_mode_list_default"
+        android:entries="@array/wake_lock_mode_entries"
+        android:entryValues="@array/wake_lock_mode_entry_values"
+        android:dialogTitle="@string/setting_lp_wake_lock_mode_list_dialog_title"
+        />
+</PreferenceScreen>

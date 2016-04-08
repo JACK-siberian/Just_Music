@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#000"
+
+    android:padding="7dp" >
+    <ImageView
+        android:id="@+id/ivArt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/btn_star_big_on"
+        android:layout_alignParentLeft="true"
+        android:padding="7dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/ivArt"
+        android:orientation="vertical" >
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TITILE"
+            android:textColor="#fff"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="5dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/number_of_songs"
+                android:layout_marginRight="5dp"
+                android:textColor="#fff"
+                />
+            <TextView
+                android:id="@+id/textAlbumCountTracks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CountTracks"
+                android:textColor="#fff"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

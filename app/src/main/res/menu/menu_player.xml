@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_my_music"
+        app:showAsAction="ifRoom|withText"
+        android:icon="@raw/button_my_music"
+        android:title="@string/my_music" />
+    <item
+        android:id="@+id/action_settings"
+        app:showAsAction="never"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/action_settings" />
+    <item
+        android:id="@+id/action_exit"
+        app:showAsAction="never"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:title="@string/exit" />
+</menu>
