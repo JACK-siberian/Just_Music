@@ -3,7 +3,7 @@
     <item
         android:id="@+id/action_my_music"
         app:showAsAction="ifRoom|withText"
-        android:icon="@raw/button_my_music"
+        android:icon="@drawable/button_my_music"
         android:title="@string/my_music" />
     <item
         android:id="@+id/action_settings"

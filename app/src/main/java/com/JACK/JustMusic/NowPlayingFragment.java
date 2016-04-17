@@ -1,4 +1,4 @@
-package com.JACK.JustMusicWW;
+package com.JACK.JustMusic;
 
 import android.app.Activity;
 import android.os.Bundle;

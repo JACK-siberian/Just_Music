@@ -1,4 +1,4 @@
-package com.JACK.JustMusicWW;
+package com.JACK.JustMusic;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.util.Log;
 
-import com.JACK.JustMusicWW.control.MusicController;
+import com.JACK.JustMusic.control.MusicController;
 
 public class NoisyAudioStreamReceiver extends BroadcastReceiver {
     @Override

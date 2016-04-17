@@ -1,4 +1,4 @@
-package com.JACK.JustMusicWW.control;
+package com.JACK.JustMusic.control;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,13 +11,13 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.JACK.JustMusicWW.R;
-import com.JACK.JustMusicWW.myUtil.MyUtil;
-import com.JACK.JustMusicWW.objects.MyMusic;
-import com.JACK.JustMusicWW.objects.Song;
-import com.JACK.JustMusicWW.objects.Tracklist;
-import com.JACK.JustMusicWW.PlayMusicService;
-import com.JACK.JustMusicWW.RemoteMediaControlReceiver;
+import com.JACK.JustMusic.R;
+import com.JACK.JustMusic.myUtil.MyUtil;
+import com.JACK.JustMusic.objects.MyMusic;
+import com.JACK.JustMusic.objects.Song;
+import com.JACK.JustMusic.objects.Tracklist;
+import com.JACK.JustMusic.PlayMusicService;
+import com.JACK.JustMusic.RemoteMediaControlReceiver;
 
 import java.util.ArrayList;
 
@@ -33,11 +33,6 @@ public class MusicController
     public static final String LOOP_MODE_NONE = "LOOP_MODE_NONE";
     public static final String LOOP_MODE_SINGLE = "LOOP_MODE_SINGLE";
     public static final String LOOP_MODE_ALL = "LOOP_MODE_ALL";
-
-    public static final String WAKE_LOCK_MODE_PARTIAL = "PARTIAL_WAKE_LOCK";
-    public static final String WAKE_LOCK_MODE_SCREEN_DIM = "SCREEN_DIM_WAKE_LOCK";
-    public static final String WAKE_LOCK_MODE_SCREEN_BRIGHT = "SCREEN_BRIGHT_WAKE_LOCK";
-    public static final String WAKE_LOCK_MODE_FULL = "FULL_WAKE_LOCK";
 
     private static MusicController instance;
 
@@ -162,9 +157,8 @@ public class MusicController
             musicPlayerListener.changeButtonToPlay();
     }
     @Override
-    public void onStopMusic(long pos) {
+    public void onStopMusic() {
         streamMusicStatus = MUSIC_STOPPING;
-        curTracklist.setLastTimePosition((int)pos);
         if ( canReleased() )
             release();
     }
@@ -183,10 +177,6 @@ public class MusicController
                             context.getString(R.string.setting_cb_shuffle_mode),
                             false)
             );
-
-        if ( key.equals(context.getString(R.string.setting_lp_wake_lock_mode_list))) {
-            setWakeLockMode(prefs.getString(context.getString(R.string.setting_lp_wake_lock_mode_list), WAKE_LOCK_MODE_PARTIAL));
-        }
     }
     //*****!
 
@@ -248,11 +238,13 @@ public class MusicController
     }
 
     public boolean hasPrevTrack() {
-        return !getLoopMode().equals(MusicController.LOOP_MODE_NONE) || curTracklist.hasTrack(curTracklist.getCurPosition() - 1);
+        return (!getLoopMode().equals(MusicController.LOOP_MODE_NONE) && (playerIsAvailable = curTracklist.isAvailable()))
+                || curTracklist.hasTrack(curTracklist.getCurPosition() - 1);
     }
 
     public boolean hasNextTrack() {
-        return !getLoopMode().equals(MusicController.LOOP_MODE_NONE) || curTracklist.hasTrack(curTracklist.getCurPosition() + 1);
+        return (!getLoopMode().equals(MusicController.LOOP_MODE_NONE) && (playerIsAvailable = curTracklist.isAvailable()))
+                || curTracklist.hasTrack(curTracklist.getCurPosition() + 1);
     }
 
     public void prevTrack() {
@@ -328,6 +320,9 @@ public class MusicController
         return prefs.getBoolean(context.getString(R.string.setting_cb_shuffle_mode), false);
     }
 
+    public Song getTrack(int position) {
+        return curTracklist.getTrack(position);
+    }
     public Song getCurTrack() {
         return curTracklist.getCurTrack();
     }
@@ -378,14 +373,39 @@ public class MusicController
         return prefs.getString(context.getString(R.string.setting_lp_loop_mode_list), LOOP_MODE_NONE);
     }
 
-    public void setWakeLockMode(String mode) {
-        context.startService(new Intent(context, PlayMusicService.class)
-                    .putExtra("ACTION", PlayMusicService.ACTION_CHANGE_TRACK)
-                    .putExtra("MODE", mode)
-        );
+    public void deleteTrackFromTracklist(int position) {
+        boolean isPlaying= isPlaying();
+        boolean hasRealNextTrack = curTracklist.hasNextRealTrack();
+
+        curTracklist.deleteTrack(position);
+
+        if (hasRealNextTrack) {
+            if (isPlaying)
+                context.startService(new Intent(context, PlayMusicService.class)
+                        .putExtra("ACTION", PlayMusicService.ACTION_CHANGE_TRACK));
+        }
+        else {
+            if (hasNextTrack())
+                context.startService(new Intent(context, PlayMusicService.class)
+                        .putExtra("ACTION", PlayMusicService.ACTION_CHANGE_TRACK));
+            else {
+                if (isPlaying)
+                    context.startService(new Intent(context, PlayMusicService.class)
+                            .putExtra("ACTION", PlayMusicService.ACTION_PAUSE));
+                nextTrack();
+            }
+
+        }
+        curTracklist.setLastTimePosition(0);
+
+        if (playerIsAvailable = curTracklist.isAvailable()) {
+            refreshCoversData();
+        }
+        else
+            refreshViews(false);
     }
 
-    public void changePlaylist(Cursor cursor, int position, int time) {
+    public void changeTracklist(Cursor cursor, int position, int time) {
         if ( curTracklist == null)
             curTracklist = new Tracklist(context.getFilesDir());
 

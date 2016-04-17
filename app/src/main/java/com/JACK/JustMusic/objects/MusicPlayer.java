@@ -1,4 +1,4 @@
-package com.JACK.JustMusicWW.objects;
+package com.JACK.JustMusic.objects;
 
 import android.content.Context;
 import android.media.AudioManager;
@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.os.PowerManager;
 import android.util.Log;
 
-import com.JACK.JustMusicWW.control.MusicController;
+import com.JACK.JustMusic.control.MusicController;
 
 import java.io.IOException;
 
@@ -63,34 +63,6 @@ public  class MusicPlayer {
             return mediaPlayer.getCurrentPosition();
         else
             return 0;
-    }
-
-    public void setLoopMode(boolean loopMode) {
-        mediaPlayer.setLooping(loopMode);
-    }
-    public void setWakeLock(String mode) {
-        //mediaPlayer.setScreenOnWhilePlaying(true);
-        switch (mode) {
-            case MusicController.WAKE_LOCK_MODE_FULL :
-                mediaPlayer.setWakeMode( context, PowerManager.FULL_WAKE_LOCK);
-                break;
-            case MusicController.WAKE_LOCK_MODE_SCREEN_BRIGHT :
-                mediaPlayer.setWakeMode( context, PowerManager.SCREEN_BRIGHT_WAKE_LOCK);
-                break;
-            case MusicController.WAKE_LOCK_MODE_SCREEN_DIM :
-                mediaPlayer.setWakeMode( context, PowerManager.SCREEN_DIM_WAKE_LOCK);
-                break;
-            case MusicController.WAKE_LOCK_MODE_PARTIAL :
-                mediaPlayer.setWakeMode( context, PowerManager.PARTIAL_WAKE_LOCK);
-                break;
-        }
-        /*
-        Flag Value	             CPU	Screen	    Keyboard
-        PARTIAL_WAKE_LOCK	    On*	    Off	        Off
-        SCREEN_DIM_WAKE_LOCK	On	    Dim	         Off
-        SCREEN_BRIGHT_WAKE_LOCK	On	    Bright	    Off
-        FULL_WAKE_LOCK	        On	    Bright	    Bright
-         */
     }
 
     public int getDuration ( ) {

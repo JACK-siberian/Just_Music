@@ -1,11 +1,13 @@
-package com.JACK.JustMusicWW;
+package com.JACK.JustMusic;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -18,10 +20,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.JACK.JustMusicWW.control.MusicController;
-import com.JACK.JustMusicWW.myUtil.MyUtil;
-import com.JACK.JustMusicWW.objects.Song;
+import com.JACK.JustMusic.control.MusicController;
+import com.JACK.JustMusic.myUtil.ImageCoversPagerAdapter;
+import com.JACK.JustMusic.myUtil.MyUtil;
+import com.JACK.JustMusic.myUtil.OnSongLongClickDialog;
+import com.JACK.JustMusic.objects.MyMusic;
+import com.JACK.JustMusic.objects.Song;
 
 import java.util.ArrayList;
 
@@ -35,7 +41,8 @@ import java.util.ArrayList;
 public class PlayerActivity extends AppCompatActivity
         implements MusicController.MusicPlayerListener,
         NowPlayingFragment.OnNowPlayingFragmentListener,
-        PlayerFragment.OnPlayerFragmentListener {
+        PlayerFragment.OnPlayerFragmentListener,
+        ImageCoversPagerAdapter.OnSongLongClickListener {
     private final String TAG = PlayerActivity.class.getSimpleName();
 
     private TextView textViewCurTime;
@@ -55,6 +62,7 @@ public class PlayerActivity extends AppCompatActivity
     private FragmentManager fragmentManager;
     private PlayerFragment playerFragment;
     private NowPlayingFragment nowPlayingFragment;
+    private DialogFragment  onSongLongClickDialog;
 
     private MusicController musicController;
 
@@ -92,12 +100,12 @@ public class PlayerActivity extends AppCompatActivity
     @Override
     public void changeButtonToPlay() {
         //noinspection ResourceType
-        buttonPlayPause.setImageResource(R.raw.button_play);
+        buttonPlayPause.setImageResource(R.drawable.button_play);
     }
     @Override
     public void changeButtonToPause() {
         //noinspection ResourceType
-        buttonPlayPause.setImageResource(R.raw.button_pause);
+        buttonPlayPause.setImageResource(R.drawable.button_pause);
     }
     @Override
     public void changeSeekBarDurationWithTime( long duration, String durStr) {
@@ -115,25 +123,25 @@ public class PlayerActivity extends AppCompatActivity
     public void changeShuffleMode(boolean mode) {
         if (mode)
             //noinspection ResourceType
-            buttonShuffleMode.setImageResource( R.raw.media_shuffle_on);
+            buttonShuffleMode.setImageResource( R.drawable.media_shuffle_on);
         else
             //noinspection ResourceType
-            buttonShuffleMode.setImageResource( R.raw.media_shuffle_off);
+            buttonShuffleMode.setImageResource( R.drawable.media_shuffle_off);
     }
     @Override
     public void changeLoopMode( String mode) {
         switch (mode) {
             case MusicController.LOOP_MODE_ALL :
                 //noinspection ResourceType
-                buttonLopeMode.setImageResource( R.raw.button_loop_all);
+                buttonLopeMode.setImageResource( R.drawable.button_loop_all);
                 break;
             case MusicController.LOOP_MODE_SINGLE :
                 //noinspection ResourceType
-                buttonLopeMode.setImageResource( R.raw.button_loop_single);
+                buttonLopeMode.setImageResource( R.drawable.button_loop_single);
                 break;
             case MusicController.LOOP_MODE_NONE :
                 //noinspection ResourceType
-                buttonLopeMode.setImageResource( R.raw.button_loop_none);
+                buttonLopeMode.setImageResource( R.drawable.button_loop_none);
                 break;
         }
     }
@@ -170,11 +178,36 @@ public class PlayerActivity extends AppCompatActivity
 
         if ( playerFragment != null )
             playerFragment.disableView();
+
+        startActivity(new Intent(
+                        getApplicationContext(),
+                        MyMusicActivity.class)
+        );
+        Toast.makeText(
+                getApplicationContext(),
+                getString(R.string.curTracklistNull),
+                Toast.LENGTH_LONG
+        ).show();
+        finish();
     }
     @Override
     public void setImageCoversData(ArrayList<Uri> imageCoversData) {
         if (playerFragment != null)
             playerFragment.refreshCoversAdapter(imageCoversData);
+    }
+    //********!
+    //!****** OnSongLongClickListener
+    @Override
+    public void onLongClick(int position) {
+        Song song = musicController.getTrack(position);
+
+        onSongLongClickDialog = new OnSongLongClickDialog();
+        Bundle bundle = new Bundle();
+        bundle.putInt("position", position);
+        bundle.putString("title", song.getArtist() + " - " + song.getTitle());
+
+        onSongLongClickDialog.setArguments(bundle);
+        onSongLongClickDialog.show(fragmentManager, "onSongLongClickDialog");
     }
     //********!
 
@@ -216,10 +249,19 @@ public class PlayerActivity extends AppCompatActivity
                         }
                     }
             );
+            alertDialog.setNeutralButton(
+                    getResources().getString(R.string.exit_dialog_neutral),
+                    null
+            );
             alertDialog.show();
         }
         else
             finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        onExitPressed();
     }
 
     @Override
@@ -231,10 +273,10 @@ public class PlayerActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch ( item.getItemId()) {
             case R.id.action_settings :
-                startActivity( new Intent( getApplicationContext(), SettingsActivity.class));
+                startActivity( new Intent(getApplicationContext(), SettingsActivity.class));
                 return true;
             case R.id.action_my_music :
-                Intent intent = new Intent(this, MyMusicActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MyMusicActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.action_exit :
@@ -243,11 +285,6 @@ public class PlayerActivity extends AppCompatActivity
             default :
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        onExitPressed();
     }
 
     @Override

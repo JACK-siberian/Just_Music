@@ -1,4 +1,4 @@
-package com.JACK.JustMusicWW;
+package com.JACK.JustMusic;
 
 import android.app.PendingIntent;
 import android.app.Service;
@@ -12,9 +12,9 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.JACK.JustMusicWW.control.MusicController;
-import com.JACK.JustMusicWW.objects.MusicPlayer;
-import com.JACK.JustMusicWW.objects.Song;
+import com.JACK.JustMusic.control.MusicController;
+import com.JACK.JustMusic.objects.MusicPlayer;
+import com.JACK.JustMusic.objects.Song;
 
 public class PlayMusicService extends Service {
     private final String TAG = PlayMusicService.class.getSimpleName();
@@ -44,7 +44,7 @@ public class PlayMusicService extends Service {
         void onCompletionTrack();
         void onPlayMusic();
         void onPauseMusic();
-        void onStopMusic(long pos);
+        void onStopMusic();
         void onPlayProgressUpdate(long pos);
     }
 
@@ -117,7 +117,7 @@ public class PlayMusicService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand()");
+        Log.d(TAG, "onStartCommand() " + intent.getStringExtra("ACTION"));
         if ((flags & START_FLAG_RETRY) == 0)
             Log.i(TAG, "onStartCommand FLAG: " + " Flag_RETRY");
         if ((flags & START_FLAG_REDELIVERY) == 0)
@@ -145,7 +145,7 @@ public class PlayMusicService extends Service {
                 break;
 
             case ACTION_CHANGE_TRACK :
-                if (musicPlayer.isPlaying())
+                if (musicPlayer != null && musicPlayer.isPlaying())
                     pauseMusic();
                 curTrack = musicController.getCurTrack();
                 prepareTrack(curTrack.getUri(), 0);
@@ -153,7 +153,8 @@ public class PlayMusicService extends Service {
                 break;
 
             case ACTION_SET_POSITION :
-                musicPlayer.setPosition(musicController.getPosition());
+                if (musicPlayer != null)
+                    musicPlayer.setPosition(musicController.getPosition());
                 break;
 
             case ACTION_SET_WAKE_LOCK :
@@ -173,9 +174,7 @@ public class PlayMusicService extends Service {
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
 
-        serviceListener.onStopMusic((long) musicPlayer.getPosition());
-        musicPlayer.releaseMusicPlayer();
-        musicPlayer = null;
+        serviceListener.onStopMusic();
     }
 
 
@@ -213,6 +212,8 @@ public class PlayMusicService extends Service {
         pauseMusic();
         audioManager.abandonAudioFocus(audioFocusChangeListener);
         closeNotification();
+        musicPlayer.releaseMusicPlayer();
+        musicPlayer = null;
         stopSelf();
     }
 
@@ -257,7 +258,7 @@ public class PlayMusicService extends Service {
     }
 
     private void startPlayProgressUpdater( ) {
-        if (musicPlayer.isPlaying())
+        if (musicPlayer != null && musicPlayer.isPlaying())
             handler.postDelayed(playProgressUpdater, 500);
     }
 

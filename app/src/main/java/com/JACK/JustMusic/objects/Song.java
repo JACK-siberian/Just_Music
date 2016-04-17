@@ -1,8 +1,8 @@
-package com.JACK.JustMusicWW.objects;
+package com.JACK.JustMusic.objects;
 
 import android.net.Uri;
 
-import com.JACK.JustMusicWW.myUtil.MyUtil;
+import com.JACK.JustMusic.myUtil.MyUtil;
 
 import java.io.Serializable;
 

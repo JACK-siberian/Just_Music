@@ -3,6 +3,6 @@
     <item
         android:id="@+id/action_show_player"
         app:showAsAction="always"
-        android:icon="@raw/button_player"
+        android:icon="@drawable/button_player"
         android:title="@string/player" />
 </menu>

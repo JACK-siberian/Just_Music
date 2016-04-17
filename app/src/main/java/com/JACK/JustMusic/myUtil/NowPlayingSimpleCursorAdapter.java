@@ -1,4 +1,4 @@
-package com.JACK.JustMusicWW.myUtil;
+package com.JACK.JustMusic.myUtil;
 
 import android.content.Context;
 import android.database.Cursor;

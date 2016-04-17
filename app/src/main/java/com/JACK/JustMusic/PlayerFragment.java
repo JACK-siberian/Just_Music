@@ -1,4 +1,4 @@
-package com.JACK.JustMusicWW;
+package com.JACK.JustMusic;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -12,10 +12,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.JACK.JustMusicWW.myUtil.ImageCoversPagerAdapter;
-import com.JACK.JustMusicWW.objects.Song;
+import com.JACK.JustMusic.myUtil.ImageCoversPagerAdapter;
+import com.JACK.JustMusic.objects.Song;
 
 import java.util.ArrayList;
 

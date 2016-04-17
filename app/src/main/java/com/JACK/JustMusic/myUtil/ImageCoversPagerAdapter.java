@@ -1,15 +1,16 @@
-package com.JACK.JustMusicWW.myUtil;
+package com.JACK.JustMusic.myUtil;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.JACK.JustMusicWW.R;
+import com.JACK.JustMusic.R;
 
 import java.util.ArrayList;
 
@@ -17,9 +18,15 @@ public class ImageCoversPagerAdapter extends PagerAdapter {
 
     private ArrayList<Uri> imageCovers;
     private Context context;
+    private OnSongLongClickListener onSongLongClickListener;
+
+    public interface OnSongLongClickListener {
+        void onLongClick(int position);
+    }
 
     public ImageCoversPagerAdapter(Context context, ArrayList<Uri> images){
         this.context = context;
+        onSongLongClickListener = (OnSongLongClickListener)context;
         this.imageCovers = images;
     }
 
@@ -46,14 +53,20 @@ public class ImageCoversPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
         if ( imageCovers != null) {
             LayoutInflater inflater = LayoutInflater.from(context);
             View itemGallery = inflater.inflate(R.layout.pager_image_covers_item, null);
 
-
             ImageView imageView = (ImageView) itemGallery.findViewById(R.id.imageCover);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Log.e("onLongClick", "" + position);
+                    onSongLongClickListener.onLongClick(position);
+                    return true;
+                }
+            });
 
             Uri curImageUri = imageCovers.get(position);
             Bitmap bitmap = MyUtil.getCoverArt(context, curImageUri);
@@ -61,7 +74,7 @@ public class ImageCoversPagerAdapter extends PagerAdapter {
                 imageView.setImageBitmap(bitmap);
             else
                 //noinspection ResourceType
-                imageView.setImageResource(R.raw.no_cover);
+                imageView.setImageResource(R.drawable.no_cover);
 
             container.addView(itemGallery);
             return itemGallery;

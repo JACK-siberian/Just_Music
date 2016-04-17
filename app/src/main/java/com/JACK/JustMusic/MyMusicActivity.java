@@ -1,5 +1,6 @@
-package com.JACK.JustMusicWW;
+package com.JACK.JustMusic;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -10,16 +11,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
-import com.JACK.JustMusicWW.control.MusicController;
-import com.JACK.JustMusicWW.objects.MyMusic;
+import com.JACK.JustMusic.control.MusicController;
+import com.JACK.JustMusic.objects.MyMusic;
 
 public class MyMusicActivity
         extends AppCompatActivity
         implements MyMusicFragment.OnMyMusicItemSelectedListener,
-        PlaylistsFragment.PlaylistsFragmentListener,
+                PlaylistsFragment.PlaylistsFragmentListener,
                 TracklistFragment.OnTrackSelectedListener,
-        ArtistsFragment.ArtistsFragmentListener,
-        AlbumsFragment.AlbumsFragmentListener {
+                ArtistsFragment.ArtistsFragmentListener,
+                AlbumsFragment.AlbumsFragmentListener {
 
     public final String TAG = MyMusicActivity.class.getSimpleName();
 
@@ -85,8 +86,8 @@ public class MyMusicActivity
     //  TracklistFragment.OnTrackSelectedListener
     @Override
     public void onTracklistSelected(Cursor cursor, int position, int time) {
-        MusicController.getInstance(getApplicationContext()).changePlaylist(cursor, position, time);
-
+        MusicController.getInstance(getApplicationContext()).changeTracklist(cursor, position, time);
+        startActivity(new Intent(getApplicationContext(), PlayerActivity.class));
         finish();
     }
 
@@ -106,7 +107,7 @@ public class MyMusicActivity
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         //noinspection ResourceType
-        actionBar.setHomeAsUpIndicator(R.raw.back);
+        actionBar.setHomeAsUpIndicator(R.drawable.back);
 
         fragmentManager = getSupportFragmentManager();
         createMyMusicFragment();

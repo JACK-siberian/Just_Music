@@ -1,4 +1,4 @@
-package com.JACK.JustMusicWW.objects;
+package com.JACK.JustMusic.objects;
 
 import android.database.Cursor;
 import android.net.Uri;
@@ -29,7 +29,7 @@ public class Tracklist {
     }
 
     public boolean isAvailable() {
-        return songs != null;
+        return songs != null && songs.size() > 0;
     }
 
     public boolean setTracklist(Cursor cursor, int position, int time) {
@@ -83,8 +83,38 @@ public class Tracklist {
             return false;
     }
 
+    public void deleteTrack(int position) {
+        if (isValidIndex(position)) {
+            if (songs.size() == 1) {
+                songs = null;
+                safeArray = null;
+                curPosition = -1;
+            }
+            else {
+                Song song = songs.get(position);
+                songs.remove(position);
+
+                if (!isValidIndex(curPosition))
+                    curPosition--;
+                else if (position < curPosition)
+                    curPosition--;
+
+                if (safeArray != null)
+                    safeArray.remove(song);
+            }
+        }
+        lastTimePosition = 0;
+        saveTracklist();
+    }
+
+    public Song getTrack(int index) {
+        if ( isValidIndex(index) )
+            return songs.get( index );
+        else
+            return null;
+    }
     public Song getCurTrack() {
-        if ( !songs.isEmpty() )
+        if ( songs != null && !songs.isEmpty() )
             return getTrack(curPosition);
         else
             return null;
@@ -114,6 +144,12 @@ public class Tracklist {
 
     public boolean hasTrack(int position) {
         return isValidIndex(position);
+    }
+    public boolean hasNextRealTrack() {
+        return isValidIndex(curPosition + 1);
+    }
+    public boolean hasPrevRealTrack() {
+        return isValidIndex(curPosition - 1);
     }
 
     public void toStartTracklist() {
@@ -288,12 +324,6 @@ public class Tracklist {
     }
 
     private boolean isValidIndex(int index) {
-        return index >= 0 && index < songs.size();
-    }
-    private Song getTrack(int index) {
-        if ( isValidIndex(index) )
-            return songs.get( index );
-        else
-            return null;
+        return songs != null && index < songs.size() && index >= 0;
     }
 }

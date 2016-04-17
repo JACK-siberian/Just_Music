@@ -1,9 +1,9 @@
-package com.JACK.JustMusicWW.objects;
+package com.JACK.JustMusic.objects;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.JACK.JustMusicWW.R;
+import com.JACK.JustMusic.R;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -59,26 +59,26 @@ public class MyMusic {
                 TRACKLIST_TYPE_SPECIAL,
                 context.getResources().getString(R.string.my_music_item_all_tracks),
                 context.getResources().getString(R.string.playlist_all_tracks_desc),
-                R.raw.yoda,
+                R.drawable.yoda,
                 0,
                 CONTENT_TRACKLIST
         );
         myMusicArray.add(newMyMusicItem(
                 ITEM_ALBUMS,
                 context.getResources().getString(R.string.my_music_item_albums),
-                R.raw.yoda,
+                R.drawable.yoda,
                 CONTENT_ALBUMS
         ));
         myMusicArray.add(newMyMusicItem(
                 ITEM_ARTISTS,
                 context.getResources().getString(R.string.my_music_item_artists),
-                R.raw.yoda,
+                R.drawable.yoda,
                 CONTENT_ARTISTS
         ));
         myMusicArray.add(newMyMusicItem(
                 ITEM_PLAYLISTS,
                 context.getResources().getString(R.string.my_music_item_playlists),
-                R.raw.yoda,
+                R.drawable.yoda,
                 CONTENT_PLAYLISTS
         ));
     }

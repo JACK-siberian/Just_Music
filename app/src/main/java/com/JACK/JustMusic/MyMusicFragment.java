@@ -1,4 +1,4 @@
-package com.JACK.JustMusicWW;
+package com.JACK.JustMusic;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 
-import com.JACK.JustMusicWW.control.MusicController;
-import com.JACK.JustMusicWW.objects.MyMusic;
+import com.JACK.JustMusic.control.MusicController;
+import com.JACK.JustMusic.objects.MyMusic;
 
 import java.util.HashMap;
 

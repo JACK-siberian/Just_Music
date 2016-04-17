@@ -1,4 +1,4 @@
-package com.JACK.JustMusicWW;
+package com.JACK.JustMusic;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.JACK.JustMusicWW.myUtil.MusicContentProvider;
+import com.JACK.JustMusic.myUtil.MusicContentProvider;
 
 public class PlaylistsFragment extends Fragment {
     final String TAG = "Fragment Playlists  ";

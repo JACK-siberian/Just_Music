@@ -3,6 +3,6 @@
     <item
         android:id="@+id/action_show_now_playing"
         app:showAsAction="always"
-        android:icon="@raw/button_now_playing"
+        android:icon="@drawable/button_now_playing"
         android:title="@string/now_playing" />
 </menu>

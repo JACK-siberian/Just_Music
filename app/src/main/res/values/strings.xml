@@ -24,6 +24,7 @@
     <string name="exit_dialog_title">Stop playing music</string>
     <string name="exit_dialog_positive">Stop music</string>
     <string name="exit_dialog_negative">Keep playing</string>
+    <string name="exit_dialog_neutral">Cancel</string>
 
 
 
@@ -41,9 +42,4 @@
     <string name="setting_lp_loop_mode_list_dialog_title">Choose mode from list:</string>
     <string name="setting_lp_loop_mode_list_default">LOOP_MODE_NONE</string>
 
-    <string name="setting_lp_wake_lock_mode_list">wake_lock_mode_list</string>
-    <string name="setting_lp_wake_lock_mode_list_title">Wake lock mode</string>
-    <string name="setting_lp_wake_lock_mode_list_summary">Currently: </string>
-    <string name="setting_lp_wake_lock_mode_list_dialog_title">Choose mode from list:</string>
-    <string name="setting_lp_wake_lock_mode_list_default">PARTIAL_WAKE_LOCK</string>
 </resources>

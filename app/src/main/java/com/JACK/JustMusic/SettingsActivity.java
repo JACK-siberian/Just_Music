@@ -1,4 +1,4 @@
-package com.JACK.JustMusicWW;
+package com.JACK.JustMusic;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,8 +12,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if ( key.equals(getString( R.string.setting_lp_loop_mode_list)))
             updateListLoopModesSummary();
-        else if ( key.equals(getString( R.string.setting_lp_wake_lock_mode_list)))
-            updateListWakeLockModesSummary();
     }
 
     @Override
@@ -26,7 +24,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         prefs.registerOnSharedPreferenceChangeListener(this);
 
         updateListLoopModesSummary();
-        updateListWakeLockModesSummary();
     }
     @Override
     public void onDestroy() {
@@ -43,14 +40,5 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                 getString(R.string.setting_lp_loop_mode_list_summary)
                         + " "
                         + listLoopMode.getEntry());
-    }
-
-    private void updateListWakeLockModesSummary() {
-        ListPreference listWakeLockMode =
-                (ListPreference) findPreference(getString( R.string.setting_lp_wake_lock_mode_list));
-        listWakeLockMode.setSummary(
-                getString(R.string.setting_lp_wake_lock_mode_list_summary)
-                        + " "
-                        + listWakeLockMode.getEntry());
     }
 }
