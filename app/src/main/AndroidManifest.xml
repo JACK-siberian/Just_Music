@@ -25,6 +25,7 @@
             android:name=".MyMusicActivity"
             android:launchMode="singleTask"
             android:label="MY MUSIC"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:parentActivityName="com.JACK.JustMusic.PlayerActivity"
             >
             <meta-data
