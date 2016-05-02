@@ -23,7 +23,6 @@ public class PlayMusicService extends Service {
     public final static String ACTION_PAUSE = "ACTION_PAUSE";
     public final static String ACTION_CHANGE_TRACK = "ACTION_CHANGE_TRACK";
     public final static String ACTION_SET_POSITION = "ACTION_SET_POSITION";
-    public final static String ACTION_SET_WAKE_LOCK = "ACTION_SET_WAKE_LOCK";
 
     private MusicController musicController;
 
@@ -148,17 +147,17 @@ public class PlayMusicService extends Service {
                 if (musicPlayer != null && musicPlayer.isPlaying())
                     pauseMusic();
                 curTrack = musicController.getCurTrack();
-                prepareTrack(curTrack.getUri(), 0);
-                playMusic();
+                if (curTrack != null) {
+                    prepareTrack(curTrack.getUri(), 0);
+                    playMusic();
+                }
+                else
+                    Log.e(TAG, "try prepare null track on -> case ACTION_CHANGE_TRACK :");
                 break;
 
             case ACTION_SET_POSITION :
                 if (musicPlayer != null)
                     musicPlayer.setPosition(musicController.getPosition());
-                break;
-
-            case ACTION_SET_WAKE_LOCK :
-                //musicPlayer.setWakeLock(intent.getStringExtra("MODE"));
                 break;
 
             default :

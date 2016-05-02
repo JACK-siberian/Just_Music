@@ -15,7 +15,6 @@ import com.JACK.JustMusic.R;
 import java.util.ArrayList;
 
 public class ImageCoversPagerAdapter extends PagerAdapter {
-
     private ArrayList<Uri> imageCovers;
     private Context context;
     private OnSongLongClickListener onSongLongClickListener;

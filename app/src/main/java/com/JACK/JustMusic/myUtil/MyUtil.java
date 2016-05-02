@@ -15,6 +15,7 @@ public class MyUtil {
     }
 
     public static Bitmap getCoverArt ( Context context, Uri uriAudio) {
+        // TODO setDataSource failed: status = 0x80000000
         MediaMetadataRetriever myRetriever = new MediaMetadataRetriever();
         myRetriever.setDataSource( context, uriAudio);
         byte[] artwork = myRetriever.getEmbeddedPicture();

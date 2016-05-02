@@ -12,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.JACK.JustMusic.myUtil.ImageCoversPagerAdapter;
@@ -72,7 +71,6 @@ public class PlayerFragment extends Fragment {
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, " onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_player, container, false);
-        onPlayerFragmentListener.setTitleActionBar(getString(R.string.app_full_name));
         initViews(rootView);
         onPlayerFragmentListener.requestRefreshViews();
         return rootView;
@@ -107,6 +105,8 @@ public class PlayerFragment extends Fragment {
         );
         if (pagerImageCovers != null)
             pagerImageCovers.setAdapter(imageCoversPagerAdapter);
+        else
+            Log.e(TAG, "refreshCoversAdapter()    pagerImageCovers == null");
     }
 
     public void refreshView(Song curSong, int position, boolean smoothScroll) {
@@ -115,6 +115,14 @@ public class PlayerFragment extends Fragment {
             textArtist.setText(curSong.getArtist());
             textTitle.setText(curSong.getTitle());
             textAlbum.setText(curSong.getAlbum());
+
+            onPlayerFragmentListener.setTitleActionBar(
+                    (position + 1) +
+                    "/" +
+                    imageCoversPagerAdapter.getCount() +
+                    "  " +
+                    getString(R.string.app_full_name)
+            );
 
             if (pagerImageCovers.getCurrentItem() != position) {
                 changedByUser = false;

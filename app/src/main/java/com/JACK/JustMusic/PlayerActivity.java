@@ -1,7 +1,6 @@
 package com.JACK.JustMusic;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -26,8 +25,9 @@ import com.JACK.JustMusic.control.MusicController;
 import com.JACK.JustMusic.myUtil.ImageCoversPagerAdapter;
 import com.JACK.JustMusic.myUtil.MyUtil;
 import com.JACK.JustMusic.myUtil.OnSongLongClickDialog;
-import com.JACK.JustMusic.objects.MyMusic;
+import com.JACK.JustMusic.myUtil.TracklistRecyclerViewAdapter;
 import com.JACK.JustMusic.objects.Song;
+import com.JACK.JustMusic.objects.Tracklist;
 
 import java.util.ArrayList;
 
@@ -42,7 +42,8 @@ public class PlayerActivity extends AppCompatActivity
         implements MusicController.MusicPlayerListener,
         NowPlayingFragment.OnNowPlayingFragmentListener,
         PlayerFragment.OnPlayerFragmentListener,
-        ImageCoversPagerAdapter.OnSongLongClickListener {
+        ImageCoversPagerAdapter.OnSongLongClickListener,
+        TracklistRecyclerViewAdapter.OnTracklistAdapterListener {
     private final String TAG = PlayerActivity.class.getSimpleName();
 
     private TextView textViewCurTime;
@@ -72,7 +73,10 @@ public class PlayerActivity extends AppCompatActivity
     public void openPlayerFragment() {
         replaceToPlayerFragment();
     }
-
+    @Override
+    public void requestRefreshTracklistData() {
+        musicController.refreshTracklistData();
+    }
     //  PlayerFragment.OnPlayerFragmentListener
     @Override
     public void openNowPlayerFragment() {
@@ -156,6 +160,9 @@ public class PlayerActivity extends AppCompatActivity
         if ( playerFragment != null ) //&& playerFragment.isVisible()) //TODO
             playerFragment.refreshView(song, position, smoothScroll);
 
+        if ( nowPlayingFragment != null)
+            nowPlayingFragment.refreshView(position);
+
         seekBarCurSongProgress.setEnabled(true);
         buttonShuffleMode.setEnabled(true);
         buttonPrevTrack.setEnabled(true);
@@ -195,8 +202,13 @@ public class PlayerActivity extends AppCompatActivity
         if (playerFragment != null)
             playerFragment.refreshCoversAdapter(imageCoversData);
     }
+    @Override
+    public void setTracklistData(Tracklist tracklist) {
+        if (nowPlayingFragment != null)
+            nowPlayingFragment.refreshTracklistAdapter(tracklist);
+    }
     //********!
-    //!****** OnSongLongClickListener
+    //!****** OnTracklistAdapterListener
     @Override
     public void onLongClick(int position) {
         Song song = musicController.getTrack(position);
@@ -208,6 +220,10 @@ public class PlayerActivity extends AppCompatActivity
 
         onSongLongClickDialog.setArguments(bundle);
         onSongLongClickDialog.show(fragmentManager, "onSongLongClickDialog");
+    }
+    @Override
+    public void onClickTrack(int position) {
+        musicController.onTrackClicked(position);
     }
     //********!
 

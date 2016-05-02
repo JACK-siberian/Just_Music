@@ -11,13 +11,13 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.JACK.JustMusic.PlayMusicService;
 import com.JACK.JustMusic.R;
+import com.JACK.JustMusic.RemoteMediaControlReceiver;
 import com.JACK.JustMusic.myUtil.MyUtil;
 import com.JACK.JustMusic.objects.MyMusic;
 import com.JACK.JustMusic.objects.Song;
 import com.JACK.JustMusic.objects.Tracklist;
-import com.JACK.JustMusic.PlayMusicService;
-import com.JACK.JustMusic.RemoteMediaControlReceiver;
 
 import java.util.ArrayList;
 
@@ -48,6 +48,14 @@ public class MusicController
     private String streamMusicStatus = MUSIC_STOPPING;
     private boolean playerViewIsAlive = false;
     private boolean playerIsAvailable;
+    /*
+    //TODO mounted SD
+     if (!Environment.getExternalStorageState().equals(
+        Environment.MEDIA_MOUNTED)) {
+      Log.d(LOG_TAG, "SD-карта не доступна: " + Environment.getExternalStorageState());
+      return;
+    }
+     */
 
     private MusicController( Context context) {
         Log.d(TAG, "MusicController init");
@@ -99,6 +107,7 @@ public class MusicController
         void refreshViews(Song song, int position, boolean smoothScroll, long dur, long pos, String posStr, String durStr);
         void disableViews();
         void setImageCoversData(ArrayList<Uri> imageCoversData);
+        void setTracklistData(Tracklist tracklist);
     }
 
     public void setMusicPlayerListener(MusicPlayerListener musicPlayerListener) {
@@ -215,6 +224,14 @@ public class MusicController
         refreshViews(false);
     }
 
+    public void refreshTracklistData() {
+        if (musicPlayerListener != null && playerIsAvailable)
+            musicPlayerListener.setTracklistData(curTracklist);
+        else
+            ;//musicPlayerListener.setImageCoversData(null);
+        refreshViews(false);
+    }
+
     public void notifyViewCreated() {
         playerViewIsAlive = true;
     }
@@ -301,6 +318,18 @@ public class MusicController
             refreshViews(true);
         }
     }
+    public void onTrackClicked(int position) {
+        if (position == curTracklist.getCurPosition())
+            playPauseMusic();
+        else {
+            curTracklist.toTrack(position);
+            context.startService(new Intent(context, PlayMusicService.class)
+                    .putExtra("ACTION", PlayMusicService.ACTION_CHANGE_TRACK));
+            if (musicPlayerListener != null) {
+                refreshViews(true);
+            }
+        }
+    }
 
     public void changeShuffleMode(boolean mode) {
         SharedPreferences.Editor editor = prefs.edit();
@@ -374,34 +403,37 @@ public class MusicController
     }
 
     public void deleteTrackFromTracklist(int position) {
-        boolean isPlaying= isPlaying();
-        boolean hasRealNextTrack = curTracklist.hasNextRealTrack();
+        if (position == curTracklist.getCurPosition()) {
+            boolean isPlaying = isPlaying();
+            boolean hasRealNextTrack = curTracklist.hasNextRealTrack();
 
-        curTracklist.deleteTrack(position);
+            curTracklist.deleteTrack(position);
 
-        if (hasRealNextTrack) {
-            if (isPlaying)
-                context.startService(new Intent(context, PlayMusicService.class)
-                        .putExtra("ACTION", PlayMusicService.ACTION_CHANGE_TRACK));
-        }
-        else {
-            if (hasNextTrack())
-                context.startService(new Intent(context, PlayMusicService.class)
-                        .putExtra("ACTION", PlayMusicService.ACTION_CHANGE_TRACK));
-            else {
+            if (hasRealNextTrack) {
                 if (isPlaying)
                     context.startService(new Intent(context, PlayMusicService.class)
-                            .putExtra("ACTION", PlayMusicService.ACTION_PAUSE));
-                nextTrack();
-            }
+                            .putExtra("ACTION", PlayMusicService.ACTION_CHANGE_TRACK));
+            } else {
+                if (hasNextTrack())
+                    context.startService(new Intent(context, PlayMusicService.class)
+                            .putExtra("ACTION", PlayMusicService.ACTION_CHANGE_TRACK));
+                else {
+                    if (isPlaying)
+                        context.startService(new Intent(context, PlayMusicService.class)
+                                .putExtra("ACTION", PlayMusicService.ACTION_PAUSE));
+                    nextTrack();
+                }
 
+            }
+            curTracklist.setLastTimePosition(0);
         }
-        curTracklist.setLastTimePosition(0);
+        else
+            curTracklist.deleteTrack(position);
 
         if (playerIsAvailable = curTracklist.isAvailable()) {
             refreshCoversData();
-        }
-        else
+            //refreshTracklistData();
+        } else
             refreshViews(false);
     }
 

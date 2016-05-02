@@ -1,8 +1,11 @@
 package com.JACK.JustMusic;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,22 +13,32 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
+
+import com.JACK.JustMusic.myUtil.TracklistRecyclerViewAdapter;
+import com.JACK.JustMusic.objects.Tracklist;
 
 public class NowPlayingFragment extends Fragment {
     private final String TAG = "Fragment NowPlaying   ";
 
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private TracklistRecyclerViewAdapter tracklistRecyclerViewAdapter;
+    private Context context;
+
     private OnNowPlayingFragmentListener onNowPlayingFragmentListener;
     public interface OnNowPlayingFragmentListener {
         void openPlayerFragment();
+        void requestRefreshViews();
+        void requestRefreshTracklistData();
         void setTitleActionBar( String title);
     }
+
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         onNowPlayingFragmentListener = (OnNowPlayingFragmentListener) activity;
+        context = activity;
         Log.d(TAG, " onAttach");
     }
 
@@ -55,22 +68,45 @@ public class NowPlayingFragment extends Fragment {
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, " onCreateView");
-        View rootView = inflater.inflate( R.layout.fragment_with_listview, container, false);
-        onNowPlayingFragmentListener.setTitleActionBar( getString(R.string.now_playing)
-                + " [ " + 1 +" / " + 7 + " ]");
+        View rootView = inflater.inflate( R.layout.fragment_with_recylerview, container, false);
         initViews(rootView);
+        onNowPlayingFragmentListener.requestRefreshTracklistData();
+        onNowPlayingFragmentListener.requestRefreshViews();
         return rootView;
     }
 
     private void initViews(View rootView) {
-        ListView lvTracklist = (ListView) rootView.findViewById(R.id.listView);
-        lvTracklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO
-            }
-        });
-        lvTracklist.setAdapter(null); // TODO
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+    }
+
+    public void refreshTracklistAdapter(Tracklist tracklist) {
+        Log.e(TAG,"refreshTracklistAdapter");
+        tracklistRecyclerViewAdapter = new TracklistRecyclerViewAdapter(
+                tracklist,
+                context
+        );
+        if (recyclerView != null)
+            recyclerView.setAdapter(tracklistRecyclerViewAdapter);
+        else
+            Log.e(TAG, "refreshTracklistAdapter()    recyclerView == null");
+    }
+
+    public void refreshView(int position) {
+        Log.e(TAG,"refreshView");
+        if ( recyclerView != null) {
+            onNowPlayingFragmentListener.setTitleActionBar(
+                            (position + 1) +
+                            "/" +
+                            tracklistRecyclerViewAdapter.getItemCount() +
+                            "  " +
+                            getString(R.string.now_playing)
+            );
+
+            linearLayoutManager.scrollToPosition(position);
+            tracklistRecyclerViewAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override

@@ -186,6 +186,7 @@ public class Tracklist {
         }
         saveTracklist();
     }
+
     public ArrayList<Uri> getUriArray() {
         if (songs != null) {
             ArrayList<Uri> uris = new ArrayList<>(songs.size());
@@ -196,6 +197,10 @@ public class Tracklist {
         }
         else
             return null;
+    }
+
+    public int getCount() {
+        return isAvailable() ? songs.size() : 0;
     }
 
     public void saveTimePosition() {
